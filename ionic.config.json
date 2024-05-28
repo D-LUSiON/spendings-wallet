@@ -1,0 +1,7 @@
+{
+  "name": "spendings-wallet",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
