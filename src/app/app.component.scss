@@ -1,0 +1,18 @@
+ion-note {
+    padding: 1rem;
+}
+
+ion-split-pane {
+    ion-menu {
+        ion-list-header {
+            font-family: "Russo One", sans-serif;
+            border-bottom: 1px solid #fff;
+
+            * {
+                margin-bottom: 24px;
+                font-size: 1.175rem;
+                text-transform: uppercase;
+            }
+        }
+    }
+}

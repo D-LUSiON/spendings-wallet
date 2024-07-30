@@ -1,0 +1,83 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Spendings Wallet</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content
+    [fullscreen]="true"
+    [scrollEvents]="true"
+    (ionScrollStart)="scrolling = true"
+    (ionScrollEnd)="scrolling = false"
+>
+    <ion-fab
+        [class.hidden-on-scroll]="scrolling"
+        vertical="bottom"
+        horizontal="end"
+        slot="fixed"
+        (click)="openAddEntryModal()"
+    >
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-card>
+        <ion-card-header class="ion-text-center">
+            <ion-card-title>Your current financial status</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-grid>
+                <ion-row>
+                    <!-- <ion-col class="ion-border-right">
+                        <div class="ion-text-center"><strong>Expences</strong></div>
+                        <div class="ion-text-center">{{ all_expences|currency }} лв.</div>
+                    </ion-col>
+                    <ion-col class="ion-border-right">
+                        <div class="ion-text-center"><strong>Income</strong></div>
+                        <div class="ion-text-center">{{ all_income|currency }} лв.</div>
+                    </ion-col> -->
+                    <ion-col>
+                        <div class="ion-text-center"><strong>Balance</strong></div>
+                        <div
+                            class="ion-text-center"
+                            [class.ion-text-danger]="balance < 0"
+                            [class.ion-text-success]="balance > 0"
+                        >{{ balance|currency }} лв.</div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+    <ion-card *ngFor="let account of accounts">
+        <ion-card-header>
+            <ion-card-subtitle class="ion-justify-content-between">
+                <div [class.ion-text-dark]="account.active" [class.ion-text-disabled]="!account.active">{{ account.title }}</div>
+                <div
+                    [class.ion-text-danger]="account.balance < 0"
+                    [class.ion-text-secondary]="account.balance > 0"
+                >{{ account.balance|currency }} лв.</div>
+            </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-grid>
+                <ion-row>
+                    <ion-col class="ion-border-right">
+                        <div class="ion-text-center"><strong>Income</strong></div>
+                        <div class="ion-text-center">{{ account.income|currency }} лв.</div>
+                    </ion-col>
+                    <ion-col class="ion-border-right">
+                        <div class="ion-text-center"><strong>Expences</strong></div>
+                        <div class="ion-text-center">{{ account.expences|currency }} лв.</div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="ion-text-center"><strong>Transfers</strong></div>
+                        <div class="ion-text-center">{{ account.transfers|currency }} лв.</div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

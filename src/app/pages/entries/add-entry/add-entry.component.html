@@ -1,0 +1,91 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-button slot="start" fill="clear" color="dark" (click)="dismiss()">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+        </ion-button>
+        <ion-title>Add entry</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form [formGroup]="addExpenceForm">
+        <div id="AddEntryContainer">
+            <ion-segment [value]="tab" (ionChange)="segmentChanged($event)">
+                <ion-segment-button value="expence">
+                    <ion-label>Expence</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="income">
+                    <ion-label>Income</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="transfer">
+                    <ion-label>Transfer</ion-label>
+                </ion-segment-button>
+            </ion-segment>
+            <ng-container *ngIf="tab !== 'transfer'; else transfer_accounts">
+                <ion-button
+                    expand="full"
+                    [color]="!addExpenceForm.value?.['account']?.['title'] ? 'warning' : 'primary'"
+                    (click)="clickSetAccount()"
+                >
+                    Account<ion-text color="danger" *ngIf="!addExpenceForm.value?.['account']?.['title']">*</ion-text>: {{ addExpenceForm.value?.['account']?.['title'] ? addExpenceForm.value?.['account']?.['title'] : 'not selected' }}
+                </ion-button>
+            </ng-container>
+            <ng-template #transfer_accounts>
+                <ion-button
+                    expand="full"
+                    [color]="!addExpenceForm.value?.['account']?.['title'] ? 'warning' : 'primary'"
+                    (click)="clickSetAccount()"
+                >
+                    From Account<ion-text color="danger" *ngIf="!addExpenceForm.value?.['account']?.['title']">*</ion-text>: {{ addExpenceForm.value?.['account']?.['title'] ? addExpenceForm.value?.['account']?.['title'] : 'not selected' }}
+                </ion-button>
+                <ion-button
+                    expand="full"
+                    [color]="!addExpenceForm.value?.['account_to']?.['title'] ? 'warning' : 'primary'"
+                    (click)="clickSetAccountTo()"
+                >
+                    To Account<ion-text color="danger" *ngIf="!addExpenceForm.value?.['account_to']?.['title']">*</ion-text>: {{ addExpenceForm.value?.['account_to']?.['title'] ? addExpenceForm.value?.['account_to']?.['title'] : 'not selected' }}
+                </ion-button>
+            </ng-template>
+            <ion-card [class.invisible]="tab === 'transfer'">
+                <ion-card-header *ngIf="tab !== 'transfer'">
+                    <ion-card-subtitle>Category</ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content *ngIf="tab !== 'transfer'">
+                    <ion-grid>
+                        <ion-row style="padding-bottom: 30px;">
+                            <ion-col size="3" *ngFor="let category of filteredCategories()" class="ion-text-center">
+                                <div
+                                    [class.category-selected]="category.icon.name === addExpenceForm.value['category']?.['icon']?.['name']"
+                                    (click)="selectCategory(category)"
+                                >
+                                    <span class="{{ category.icon.prefix }} la-{{ category.icon.name }} la-2x"></span>
+                                    <div><small>{{ category.title }}</small></div>
+                                </div>
+                                <!-- <ion-button
+                                    expand="full"
+                                    (click)="selectCategory(category)"
+                                    [fill]="category.icon.name === addExpenceForm.value['category']?.['icon']?.['name'] ? 'solid' : 'clear'"
+                                    [color]="category.icon.name === addExpenceForm.value['category']?.['icon']?.['name'] ? 'dark': 'medium'"
+                                >
+                                    <ion-label [color]="category.icon.name === addExpenceForm.value['category']?.['icon']?.['name'] ? 'light': 'dark'">
+                                        <span class="{{ category.icon.prefix }} la-{{ category.icon.name }} la-2x"></span>
+                                        <div><small>{{ category.title }}</small></div>
+                                    </ion-label>
+                                </ion-button> -->
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card-content>
+            </ion-card>
+            {{ addExpenceForm.invalid|log }}
+            <app-keyboard
+                formControlName="value"
+                [disabled]="addExpenceForm.invalid"
+                (dateChange)="setDate($event)"
+                [description]="addExpenceForm.value['description']"
+                (descriptionChange)="descriptionChanged($event)"
+                (done)="onSubmit()"
+            ></app-keyboard>
+        </div>
+    </form>
+</ion-content>

@@ -1,0 +1,66 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Entries</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content
+    [fullscreen]="true"
+    [scrollEvents]="true"
+    (ionScrollStart)="scrolling = true"
+    (ionScrollEnd)="scrolling = false"
+>
+    <ion-fab
+        [class.hidden-on-scroll]="scrolling"
+        vertical="bottom"
+        horizontal="end"
+        slot="fixed"
+        (click)="openAddEntryModal()"
+    >
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-item-group *ngIf="entries.length; else no_entries">
+        {{ 'entries'|log:(entries|entriesByDate|keyvalue) }}
+        <ng-container *ngFor="let date of (entries|entriesByDate|keyvalue); let idx = index">
+            <ion-item-divider color="light" sticky>
+                {{ date.key }}
+                <ion-text slot="end" [color]="(date.value|entriesBallance) >= 0 ? 'success' : 'danger'">{{ date.value|entriesBallance|currency }}</ion-text>
+            </ion-item-divider>
+            <ion-item
+                lines="full"
+                *ngFor="let entry of date.value; let exp_idx = index" [class.item-last]="exp_idx === entries.length - 1"
+                (click)="previewEntry(entry)"
+            >
+                <i *ngIf="entry.type !== 'transfer'; else transfer_icon" slot="start" class="app-icon app-icon-{{ entry.type }} {{ entry.category.icon.prefix }} la-{{ entry.category.icon.name }}"></i>
+                <ng-template #transfer_icon>
+                    <i slot="start" class="app-icon app-icon-{{ entry.type }} la la-exchange-alt"></i>
+                </ng-template>
+                <ion-label>
+                    <ng-container *ngIf="entry.type === 'transfer'">Transfer</ng-container>
+                    <ng-container *ngIf="entry.type !== 'transfer'">
+                        {{ entry.description || entry.category.title }}
+                    </ng-container>
+                    <div>
+                        <small>
+                            <em>
+                                from {{ entry.account.title }}
+                                <ng-container *ngIf="entry.type === 'transfer'">to {{ entry.account_to.title }}</ng-container>
+                            </em>
+                        </small>
+                    </div>
+                </ion-label>
+                <ion-text slot="end" color="{{ entry.type === 'expence' ? 'danger' : (entry.type === 'income' ? 'success' : '') }}">{{ entry.type === 'expence' ? '-' : '' }}{{ entry.value|currency }}</ion-text>
+            </ion-item>
+        </ng-container>
+    </ion-item-group>
+    <ng-template #no_entries>
+        <ion-text color="medium" class="no-entries">
+            No entries
+        </ion-text>
+    </ng-template>
+</ion-content>

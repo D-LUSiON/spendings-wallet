@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Accounts</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content
+    [fullscreen]="true"
+    [scrollEvents]="true"
+    (ionScrollStart)="scrolling = true"
+    (ionScrollEnd)="scrolling = false"
+>
+    <ion-fab
+        [class.hidden-on-scroll]="scrolling"
+        vertical="bottom"
+        horizontal="end"
+        slot="fixed"
+        (click)="openAddAccountModal()"
+    >
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-item-group>
+        <ion-item lines="full" *ngFor="let account of accounts" (click)="editAccount(account)">
+            <ion-label [color]="account.active ? 'dark' : 'medium'">{{ account.title }}</ion-label>
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+        </ion-item>
+    </ion-item-group>
+</ion-content>

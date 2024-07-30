@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Categories</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content
+    [fullscreen]="true"
+    [scrollEvents]="true"
+    (ionScrollStart)="scrolling = true"
+    (ionScrollEnd)="scrolling = false"
+>
+    <ion-fab
+        [class.hidden-on-scroll]="scrolling"
+        vertical="bottom"
+        horizontal="end"
+        slot="fixed"
+        (click)="addOrEditCategory()"
+    >
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-item-group>
+        <ion-item lines="full" *ngFor="let category of categories" (click)="addOrEditCategory(category)">
+            <span
+                slot="start"
+                class="app-icon app-icon-{{ category.type }} {{ category.icon.prefix }} la-{{ category.icon.name }}"
+                [class.app-icon-disabled]="!category.active"
+            ></span>
+            <ion-label [color]="category.active ? 'dark': 'medium'">{{ category.title }}</ion-label>
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+        </ion-item>
+    </ion-item-group>
+</ion-content>

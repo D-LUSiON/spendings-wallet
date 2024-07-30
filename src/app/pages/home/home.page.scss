@@ -1,0 +1,16 @@
+ion-card {
+    margin-bottom: 15px;
+
+    ion-card-header {
+        background-color: var(--ion-color-light);
+        color: var(--ion-color-dark);
+
+        ion-card-subtitle {
+            display: flex;
+        }
+    }
+
+    ion-card-content {
+        padding: 0;
+    }
+}

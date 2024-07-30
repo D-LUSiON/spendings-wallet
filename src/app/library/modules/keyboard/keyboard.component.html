@@ -1,0 +1,269 @@
+<div class="keyboard-input-group">
+    <ion-item class="keyboard-input">
+        <ion-label position="floating">Description</ion-label>
+        <ion-input class="ion-no-border" [value]="description" (ionInput)="descriptionChanged($event)"></ion-input>
+    </ion-item>
+    <div class="keyboard-value">
+        <div>
+            <small>{{ value_acc }}</small>
+        </div>
+        <div>
+            {{ value_view }}
+        </div>
+    </div>
+</div>
+<ion-grid>
+    <ion-row class="ion-nowrap">
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked(7)"
+            >
+                7
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked(8)"
+            >
+                8
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked(9)"
+            >
+                9
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked('cls')"
+            >
+                C
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked('calendar')"
+            >
+                <!-- <ion-icon name="calendar-number-outline"></ion-icon> -->
+                <span class="small-text">{{ (date|date:'YYYY-MM-dd') === (today|date:'YYYY-MM-dd') ? 'Today' : date|date:'MMM/dd' }}</span>
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked(4)"
+            >
+                4
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked(5)"
+            >
+                5
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked(6)"
+            >
+                6
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked('+')"
+            >
+                <ion-icon name="add-outline"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked('*')"
+            >
+                <ion-icon name="close-outline"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked(1)"
+            >
+                1
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked(2)"
+            >
+                2
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked(3)"
+            >
+                3
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked('-')"
+            >
+                <ion-icon name="remove-outline"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked('/')"
+            >
+                /
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked('.')"
+            >
+                .
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked(0)"
+            >
+                0
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked('erase')"
+            >
+                <ion-icon name="backspace-outline"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+            <ion-button
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked('=')"
+            >
+                =
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+        <ion-col
+            class="icon-done ion-no-padding"
+            [class.disabled]="disabled"
+        >
+            <ion-button
+                [disabled]="disabled"
+                class="ion-no-padding ion-no-margin"
+                fill="clear"
+                expand="full"
+                color="dark"
+                (click)="clicked('done')"
+            >
+                <ion-icon name="checkmark-outline"></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+            </ion-button>
+        </ion-col>
+    </ion-row>
+</ion-grid>

@@ -1,0 +1,16 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+    height: calc(100% - 110px);
+    // height: 100%;
+
+    & > ion-item {
+        flex: 0 0 auto;
+    }
+
+    & > app-icon-choose {
+        flex: 1 1 auto;
+    }
+}
