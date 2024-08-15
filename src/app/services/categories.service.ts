@@ -1,6 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { Category } from '@app/shared/classes';
+import { CapacitorSQLite, SQLiteConnection, SQLiteDBConnection } from '@capacitor-community/sqlite';
 import { BehaviorSubject } from 'rxjs';
+import { ConnectionStatus, DatabaseService } from './database.service';
+import { DB_CATEGORIES, DB_CATEGORIES_DEFAULT } from '@app/db_def';
 
 @Injectable({
     providedIn: 'root'
@@ -160,9 +163,31 @@ export class CategoriesService {
         }),
     ];
 
+    // private _sqlite: SQLiteConnection = new SQLiteConnection(CapacitorSQLite);
+    // private _db!: SQLiteDBConnection;
+
     categories$: BehaviorSubject<Category[]> = new BehaviorSubject(this.categories);
 
-    constructor() { }
+    private _cats: WritableSignal<Category[]> = signal<Category[]>([]);
+
+    constructor(
+        private _database: DatabaseService,
+    ) {
+        this._database.connected$.subscribe((status) => {
+            console.log(`Connection status:`, status, ConnectionStatus[status]);
+            if (status === ConnectionStatus.connected) {
+                console.log(`Database is connected, initializing table "Categories"`);
+                this._initTable();
+            }
+        });
+    }
+
+    private async _initTable() {
+        const changes = await this._database.sqlite.importFromJson(JSON.stringify(DB_CATEGORIES));
+        const res = await this._database.db.query(`pragma table_info('${DB_CATEGORIES.tables[0].name}');`);
+        console.log(`tables`, res);
+        console.log(`Default categories:`, DB_CATEGORIES_DEFAULT);
+    }
 
     get categories() {
         return [...this._categories];

@@ -1,10 +1,19 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { Router, Routes } from '@angular/router';
-import { ActionSheetController, AlertController, IonRouterOutlet, MenuController, ModalController, Platform, PopoverController, ToastController } from '@ionic/angular';
+import {
+    ActionSheetController,
+    AlertController,
+    IonRouterOutlet,
+    MenuController,
+    ModalController,
+    Platform,
+    PopoverController,
+    ToastController
+
+} from '@ionic/angular';
 import { routes } from './app-routing.module';
-import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
-import { Storage } from '@ionic/storage-angular';
-import { Drivers } from '@ionic/storage';
+import { DatabaseService } from './services';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
     selector: 'app-root',
@@ -33,10 +42,7 @@ export class AppComponent {
     @ViewChildren(IonRouterOutlet)
     routerOutlets: QueryList<IonRouterOutlet>;
 
-    storage = new Storage({
-        name: 'spendings-wallet-db',
-        driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
-    });
+    isWeb: boolean = false;
 
     constructor(
         private _platform: Platform,
@@ -47,18 +53,18 @@ export class AppComponent {
         private _modalCtrl: ModalController,
         private _menu: MenuController,
         private _toast: ToastController,
+        private _db: DatabaseService,
     ) {
-        this.initializeApp();
-    }
+        this._platform.ready().then(() => {
+            if (this._platform.is('cordova'))
+                this.backButtonEvent();
 
-    async initializeApp() {
-        await this._platform.ready();
+            this.isWeb = Capacitor.getPlatform() === 'web';
 
-        await this.storage.defineDriver(CordovaSQLiteDriver);
-        await this.storage.create();
-
-        if (this._platform.is('cordova'))
-            this.backButtonEvent();
+            setTimeout(async () => {
+                await this._db.initDBConnection();
+            }, 10);
+        });
     }
 
     backButtonEvent() {

@@ -23,6 +23,9 @@
             ],
             "@env/*": [
                 "src/environments/*"
+            ],
+            "crypto": [
+                "node_modules/crypto-js"
             ]
         }
     },
