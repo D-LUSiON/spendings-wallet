@@ -4,15 +4,15 @@
 <ion-item lines="full">
     <span
         slot="start"
-        *ngIf="selected_icon"
-        class="{{ selected_icon.prefix }} la-{{ selected_icon.name }} la-2x"
+        *ngIf="value"
+        class="{{ value.prefix }} la-{{ value.name }} la-2x"
     ></span>
-    <ion-label [color]="selected_icon ? 'dark': 'medium'">
-        <em *ngIf="!selected_icon">Select icon...</em>
-        <span *ngIf="selected_icon">{{ selected_icon.name|formatIconName }}</span>
+    <ion-label [color]="value ? 'dark': 'medium'">
+        <em *ngIf="!value">Select icon...</em>
+        <span *ngIf="value">{{ value.name|formatIconName }}</span>
     </ion-label>
     <ion-button
-        *ngIf="selected_icon"
+        *ngIf="value"
         slot="end"
         fill="clear"
         color="dark"
@@ -35,11 +35,11 @@
                             <ion-button
                                 [disabled]="disabled"
                                 expand="full"
-                                [fill]="icon.name === selected_icon?.name ? 'solid' : 'clear'"
-                                [color]="icon === selected_icon ? 'dark': 'medium'"
+                                [fill]="icon.name === value?.name ? 'solid' : 'clear'"
+                                [color]="icon === value ? 'dark': 'medium'"
                                 (click)="selectIcon(icon)"
                             >
-                                <ion-label [color]="icon === selected_icon ? 'light': 'dark'">
+                                <ion-label [color]="icon === value ? 'light': 'dark'">
                                     <span class="{{ icon.prefix }} la-{{ icon.name }} la-2x"></span>
                                 </ion-label>
                             </ion-button>

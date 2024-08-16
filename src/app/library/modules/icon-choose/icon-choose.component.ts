@@ -25,8 +25,6 @@ export class IconChooseComponent implements OnInit, AfterViewInit, ControlValueA
 
     value: Icon;
 
-    selected_icon: Icon;
-
     constructor(
         @Optional() @Self() public _controlDirective: NgControl,
     ) {
@@ -44,8 +42,8 @@ export class IconChooseComponent implements OnInit, AfterViewInit, ControlValueA
     }
 
     selectIcon(icon: Icon) {
-        this.selected_icon = (icon?.name === this.selected_icon?.name) ? null : icon;
-        this.writeValue(this.selected_icon);
+        const selected_icon = (icon?.name === this.value?.name) ? null : icon;
+        this.writeValue(selected_icon);
         this.onChange(this.value);
         this.onTouched();
     }
