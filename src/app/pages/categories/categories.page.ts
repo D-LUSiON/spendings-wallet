@@ -50,9 +50,6 @@ export class CategoriesPage implements OnInit {
         await modal.present();
 
         const { data } = await modal.onDidDismiss();
-
-        console.log(`Returned category data:`, data);
-
         if (data)
             this._categoriesService.createOrUpdateCategory(data);
 

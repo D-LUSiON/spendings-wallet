@@ -60,7 +60,7 @@ export class AddCategoryComponent implements OnInit, AfterViewInit, OnChanges, O
 
     private _initForm() {
         this.categoryForm = this._fb.group({
-            id: this._fb.control(''),
+            id: this._fb.control(null),
             title: this._fb.control('', [Validators.required]),
             icon: this._fb.control(null),
             enabled: this._fb.control(true),
@@ -75,15 +75,20 @@ export class AddCategoryComponent implements OnInit, AfterViewInit, OnChanges, O
         const alert = await this._alertController.create({
             header: 'Delete category?',
             message: 'Are you sure you want to delete this category?',
-            buttons: ['Cancel', 'Delete']
+            buttons: [
+                'Cancel',
+                {
+                    text: 'Delete',
+                    role: 'delete'
+                }
+            ]
         });
 
         await alert.present();
 
         const { role } = await alert.onDidDismiss();
-
-        if (role === 'cancel')
-            await this._categoriesService.removeCategory(this.categoryForm.value['id']);
+        if (role === 'delete')
+            await this._categoriesService.removeCategory(this.category);
 
         this.dismiss();
     }

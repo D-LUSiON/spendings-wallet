@@ -70,7 +70,11 @@ export class CategoriesService {
         return catEntity;
     }
 
-    async createOrUpdateCategory(category) {
+    async createOrUpdateCategory(category: Category) {
+        let catEntity = this._createEntity(category);
+        catEntity = await this._categoriesRepository.save(catEntity);
+        category = new Category(catEntity);
+        console.log(category);
         const category_idx = this._categories.findIndex(x => x.id === category.id);
         if (category_idx > -1)
             this._categories[category_idx] = category;
@@ -78,11 +82,16 @@ export class CategoriesService {
             if (!category.id)
                 category.id = this._categories.length ? this._categories[this._categories.length - 1].id + 1 : 1;
             this._categories.push(category);
-            this.categories$.next(this.categories);
         }
+        this.categories$.next(this.categories);
     }
 
-    async removeCategory(id: number) {
+    async removeCategory(category: Category) {
+        const catEntity = this._createEntity(category);
+        await this._categoriesRepository.delete(catEntity);
 
+        this._categories = this._categories.filter(x => x.id !== category.id);
+        this.categories$.next(this.categories);
     }
+
 }

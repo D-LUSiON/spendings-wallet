@@ -35,10 +35,22 @@
         </ion-text>
     </ion-toolbar>
     <ion-toolbar>
-        <ion-button slot="start" fill="clear" color="danger" (click)="remove()">
+        <ion-button
+            *ngIf="category?.id"
+            slot="start"
+            fill="clear"
+            color="danger"
+            (click)="remove()"
+        >
             <ion-icon name="trash-outline"></ion-icon>
         </ion-button>
-        <ion-button slot="end" fill="clear" color="dark" [disabled]="categoryForm.untouched || !categoryForm.valid" (click)="dismiss(true)">
+        <ion-button
+            slot="end"
+            fill="clear"
+            color="dark"
+            [disabled]="categoryForm.untouched || !categoryForm.valid"
+            (click)="dismiss(true)"
+        >
             <ion-icon slot="start" name="save-outline"></ion-icon>
             <ion-label>Save</ion-label>
         </ion-button>
