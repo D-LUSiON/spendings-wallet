@@ -11,7 +11,20 @@ export class Category {
         if (data) {
             if (data.hasOwnProperty('id')) this.id = data['id'];
             if (data.hasOwnProperty('title')) this.title = data['title'];
-            if (data.hasOwnProperty('icon')) this.icon = typeof data['icon'] === 'string' ? JSON.parse(data['icon']) : data['icon'];
+            if (data.hasOwnProperty('icon')) {
+                if (typeof data['icon'] === 'string') {
+                    try {
+                        this.icon = JSON.parse(data['icon']);
+                    } catch (error) {
+                        this.icon = {
+                            name: data['icon'],
+                            prefix: 'la'
+                        }
+                    }
+                } else
+                    this.icon = data['icon'];
+                // this.icon = typeof data['icon'] === 'string' ? JSON.parse(data['icon']) : data['icon']
+            };
             if (data.hasOwnProperty('active')) this.active = typeof data['active'] === 'boolean' ? data['active'] : !!data['active'];
             if (data.hasOwnProperty('type')) this.type = data['type'];
         }

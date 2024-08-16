@@ -61,9 +61,9 @@ export class AppComponent {
 
             this.isWeb = Capacitor.getPlatform() === 'web';
 
-            setTimeout(async () => {
+            setTimeout(async () => { // Timeout for the view to be updated **fkin' jeep-sqlite**
                 await this._db.initDBConnection();
-            }, 10);
+            });
         });
     }
 
