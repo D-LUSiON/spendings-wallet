@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CategoryEntity } from '@app/entities';
+import { AccountEntity, CategoryEntity } from '@app/entities';
 import { CapacitorSQLite, SQLiteConnection } from '@capacitor-community/sqlite';
+import { environment } from '@env/environment';
 import { BehaviorSubject } from 'rxjs';
 import { DataSource } from 'typeorm';
 
@@ -34,9 +35,11 @@ export class DatabaseService {
             database: DB_NAME,
             driver: this._sqlite,
             entities: [
+                AccountEntity,
                 CategoryEntity,
             ],
-            dropSchema: true, //TODO: <-- remove for production
+            logging: ['error'],
+            dropSchema: environment.production, //TODO: <-- remove for production
             migrationsTableName: 'migrations',
         });
 

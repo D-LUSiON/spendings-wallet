@@ -23,24 +23,39 @@ export class HomePage implements OnDestroy {
     ) {
         this.subs.add(this._accountsService.accounts$.subscribe(accounts => {
             this.accounts = accounts;
-            console.log(this.accounts);
         }));
     }
 
     get all_income() {
-        return this.accounts.map(accont => accont.income).reduce((val, acc) => val += acc);
+        const all_income = this.accounts.map(accont => accont.income);
+        if (all_income.length)
+            return all_income.reduce((val, acc) => val += acc);
+        else
+            return 0;
     }
 
     get all_expences() {
-        return this.accounts.map(accont => accont.expences).reduce((val, acc) => val += acc);
+        const all_expences = this.accounts.map(accont => accont.expences);
+        if (all_expences.length)
+            return all_expences.reduce((val, acc) => val += acc);
+        else
+            return 0;
     }
 
     get all_transfers() {
-        return this.accounts.map(accont => accont.transfers).reduce((val, acc) => val += acc);
+        const all_transfers = this.accounts.map(accont => accont.transfers);
+        if (all_transfers.length)
+            return all_transfers.reduce((val, acc) => val += acc);
+        else
+            return 0;
     }
 
     get balance() {
-        return this.accounts.map(accont => accont.balance).reduce((val, acc) => val += acc);
+        const balance = this.accounts.map(accont => accont.balance);
+        if (balance.length)
+            return balance.reduce((val, acc) => val += acc);
+        else
+            return 0;
     }
 
     async openAddEntryModal() {

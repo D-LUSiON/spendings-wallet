@@ -1,93 +1,80 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Account, Currency } from '../shared/classes';
+import { Account } from '../shared/classes';
+import { ConnectionStatus, DatabaseService } from './database.service';
+import { Repository } from 'typeorm';
+import { AccountEntity } from '@app/entities';
+import { DB_ACCOUNTS_DEFAULT } from '@app/db_def';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AccountsService {
 
-    private _accounts: Account[] = [
-        new Account({
-            id: 1,
-            title: 'Cash',
-            initial_balance: 123.45,
-            currency: new Currency({
-                id: 1,
-                name: 'BGN',
-                sign: 'лв.'
-            }),
-            financial_movements: [
-                {
-                    id: 1,
-                    amount: 20.40,
-                    type: 0,
-                    description: 'Cigarettes',
-                    category: {
-                        id: 1,
-                        name: 'Cigarettes',
-                        icon: 'smoking'
-                    },
-                    date: '2021-07-29'
-                },
-                {
-                    id: 1,
-                    amount: 800,
-                    type: 1,
-                    description: 'Withdraw',
-                    category: {
-                        id: 2,
-                        name: 'Money withdraw',
-                        icon: 'money'
-                    },
-                    date: '2021-07-30',
-                    transfer_account_id: 2
-                },
-            ]
-        }),
-        new Account({
-            id: 2,
-            title: 'Bank account 1',
-            initial_balance: 4607.33,
-        }),
-        new Account({
-            id: 3,
-            title: 'Bank account 2',
-            initial_balance: 1502.87,
-        }),
-        new Account({
-            id: 4,
-            title: 'Credit card',
-            initial_balance: -400,
-            currency: new Currency({
-                id: 1,
-                name: 'USD',
-                sign: '$',
-                position: 1
-            }),
-        }),
-        new Account({
-            id: 5,
-            title: 'PayPal',
-            initial_balance: -2320.40,
-            active: false
-        }),
-        new Account({
-            id: 6,
-            title: 'Savings',
-            initial_balance: 1108,
-        }),
-    ];
+    private _accountsRepository: Repository<AccountEntity>;
+
+    private _accounts: Account[] = [];
 
     accounts$: BehaviorSubject<Account[]> = new BehaviorSubject(this.accounts);
 
-    constructor() { }
+    constructor(
+        private _database: DatabaseService,
+    ) {
+        this._database.connected$.subscribe(async (status) => {
+            if (status === ConnectionStatus.connected) {
+                this._accountsRepository = _database.dataSource.getRepository(AccountEntity);
+                await this._init();
+            }
+        });
+    }
+
+    private async _init() {
+        this._accounts = await this.getAll();
+        if (this._accounts.length === 0) {
+            await this._insertDefaultCategories(DB_ACCOUNTS_DEFAULT);
+            this._accounts = await this.getAll();
+        }
+        this.accounts$.next(this._accounts);
+    }
 
     get accounts() {
         return [...this._accounts];
     }
 
+    async getAll() {
+        const entities = await this._accountsRepository.find();
+        const accounts: Account[] = [];
+        entities.forEach(entity => {
+            const account = new Account(entity);
+            accounts.push(account);
+        });
+        return accounts;
+    }
+
+    private async _insertDefaultCategories(accounts: Account[]) {
+        const entities = [];
+        accounts.forEach(account => {
+            entities.push(this._createEntity(account));
+        });
+
+        await this._accountsRepository.insert(entities);
+    }
+
+    private _createEntity(account: Account): AccountEntity {
+        const accEntity = new AccountEntity();
+        accEntity.id = account.id;
+        accEntity.title = account.title;
+        accEntity.description = account.description;
+        accEntity.active = account.active;
+        accEntity.initial_balance = account.initial_balance;
+        return accEntity;
+    }
+
     async createOrUpdateAccount(account: Account) {
+        let accEntity = this._createEntity(account);
+        accEntity = await this._accountsRepository.save(accEntity);
+
+        account = new Account(accEntity);
         const account_idx = this._accounts.findIndex(x => x.id === account.id);
         if (account_idx > -1)
             this._accounts[account_idx] = account;
@@ -95,11 +82,15 @@ export class AccountsService {
             if (!account.id)
                 account.id = this._accounts.length ? this._accounts[this._accounts.length - 1].id + 1 : 1;
             this._accounts.push(account);
-            this.accounts$.next(this.accounts);
         }
+        this.accounts$.next(this.accounts);
     }
 
-    async removeAccount(id: number) {
+    async removeAccount(account: Account) {
+        const accEntity = this._createEntity(account);
+        await this._accountsRepository.delete(accEntity);
 
+        this._accounts = this._accounts.filter(x => x.id !== account.id);
+        this.accounts$.next(this.accounts);
     }
 }

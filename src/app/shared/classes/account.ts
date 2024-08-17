@@ -17,29 +17,32 @@ export class Account {
             if (data.hasOwnProperty('title')) this.title = data['title'];
             if (data.hasOwnProperty('description')) this.description = data['description'];
             if (data.hasOwnProperty('active')) this.active = data['active'];
-            if (data.hasOwnProperty('initial_balance')) this.initial_balance = data['initial_balance'];
+            if (data.hasOwnProperty('initial_balance')) this.initial_balance = typeof data['initial_balance'] === 'string' ? parseFloat(data['initial_balance']) : data['initial_balance'];
             if (data.hasOwnProperty('financial_movements') && data['financial_movements'] instanceof Array) this.financial_movements = data['financial_movements'].map(x => new FinancialMovement(x));
             if (data.hasOwnProperty('currency')) this.currency = new Currency(data['currency']);
         }
     }
 
     get income() {
-        if (this.financial_movements.filter(x => x.type === FinancialMovementType.Credit && !x.transfer_account_id).length)
-            return this.financial_movements.filter(x => x.type === FinancialMovementType.Credit && !x.transfer_account_id).map(x => x.amount).reduce((acc, value) => acc += value);
+        const income_movements = this.financial_movements.filter(x => x.type === FinancialMovementType.Credit && !x.transfer_account_id).map(x => x.amount);
+        if (income_movements.length)
+            return income_movements.reduce((acc, value) => acc += value);
         else
             return 0;
     }
 
     get expences() {
-        if (this.financial_movements.filter(x => x.type === FinancialMovementType.Debit && !x.transfer_account_id).length)
-            return this.financial_movements.filter(x => x.type === FinancialMovementType.Debit && !x.transfer_account_id).map(x => x.amount).reduce((acc, value) => acc += value);
+        const expence_movements = this.financial_movements.filter(x => x.type === FinancialMovementType.Debit && !x.transfer_account_id).map(x => x.amount);
+        if (expence_movements.length)
+            return expence_movements.reduce((acc, value) => acc += value);
         else
             return 0;
     }
 
     get transfers() {
-        if (this.financial_movements.filter(x => x.transfer_account_id).length)
-            return this.financial_movements.filter(x => x.transfer_account_id).map(x => x.amount).reduce((acc, value) => acc += value);
+        const transfer_movements = this.financial_movements.filter(x => x.transfer_account_id).map(x => x.amount);
+        if (transfer_movements.length)
+            return transfer_movements.reduce((acc, value) => acc += value);
         else
             return 0;
     }
