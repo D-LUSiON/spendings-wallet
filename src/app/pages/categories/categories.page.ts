@@ -4,6 +4,7 @@ import { Category } from '@app/shared/classes';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AddCategoryComponent } from './add-category/add-category.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-categories',
@@ -22,6 +23,7 @@ export class CategoriesPage implements OnInit {
         private _modalCtrl: ModalController,
         private _categoriesService: CategoriesService,
         private _loadingController: LoadingController,
+        private _translate: TranslateService,
     ) {
         this.subs.add(
             _categoriesService.categories$.subscribe((categories: Category[]) => {
@@ -35,7 +37,7 @@ export class CategoriesPage implements OnInit {
 
     async addOrEditCategory(category?: Category) {
         const loading = await this._loadingController.create({
-            message: 'Loading icons...'
+            message: this._translate.instant('Loading icons...')
         });
 
         await loading.present();
@@ -62,7 +64,7 @@ export class CategoriesPage implements OnInit {
         });
 
         const loading = await this._loadingController.create({
-            message: 'Loading icons...'
+            message: this._translate.instant('Loading icons...')
         });
 
         await loading.present();

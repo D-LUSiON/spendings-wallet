@@ -3,7 +3,7 @@
         <ion-button slot="start" fill="clear" color="dark" (click)="dismiss()">
             <ion-icon name="chevron-back-outline"></ion-icon>
         </ion-button>
-        <ion-title>Add entry</ion-title>
+        <ion-title>{{ 'Add entry'|translate }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -12,13 +12,13 @@
         <div id="AddEntryContainer">
             <ion-segment [value]="tab" (ionChange)="segmentChanged($event)">
                 <ion-segment-button value="expence">
-                    <ion-label>Expence</ion-label>
+                    <ion-label translate>Expence</ion-label>
                 </ion-segment-button>
                 <ion-segment-button value="income">
-                    <ion-label>Income</ion-label>
+                    <ion-label translate>Income</ion-label>
                 </ion-segment-button>
                 <ion-segment-button value="transfer">
-                    <ion-label>Transfer</ion-label>
+                    <ion-label translate>Transfer</ion-label>
                 </ion-segment-button>
             </ion-segment>
             <ng-container *ngIf="tab !== 'transfer'; else transfer_accounts">
@@ -27,7 +27,7 @@
                     [color]="!addExpenceForm.value?.['account']?.['title'] ? 'warning' : 'primary'"
                     (click)="clickSetAccount()"
                 >
-                    Account<ion-text color="danger" *ngIf="!addExpenceForm.value?.['account']?.['title']">*</ion-text>: {{ addExpenceForm.value?.['account']?.['title'] ? addExpenceForm.value?.['account']?.['title'] : 'not selected' }}
+                    {{ 'Account'|translate }}<ion-text color="danger" *ngIf="!addExpenceForm.value?.['account']?.['title']">*</ion-text>: {{ addExpenceForm.value?.['account']?.['title'] ? addExpenceForm.value?.['account']?.['title'] : ('not selected'|translate) }}
                 </ion-button>
             </ng-container>
             <ng-template #transfer_accounts>
@@ -36,19 +36,19 @@
                     [color]="!addExpenceForm.value?.['account']?.['title'] ? 'warning' : 'primary'"
                     (click)="clickSetAccount()"
                 >
-                    From Account<ion-text color="danger" *ngIf="!addExpenceForm.value?.['account']?.['title']">*</ion-text>: {{ addExpenceForm.value?.['account']?.['title'] ? addExpenceForm.value?.['account']?.['title'] : 'not selected' }}
+                    {{ 'From Account'|translate }}<ion-text color="danger" *ngIf="!addExpenceForm.value?.['account']?.['title']">*</ion-text>: {{ addExpenceForm.value?.['account']?.['title'] ? addExpenceForm.value?.['account']?.['title'] : ('not selected'|translate) }}
                 </ion-button>
                 <ion-button
                     expand="full"
                     [color]="!addExpenceForm.value?.['account_to']?.['title'] ? 'warning' : 'primary'"
                     (click)="clickSetAccountTo()"
                 >
-                    To Account<ion-text color="danger" *ngIf="!addExpenceForm.value?.['account_to']?.['title']">*</ion-text>: {{ addExpenceForm.value?.['account_to']?.['title'] ? addExpenceForm.value?.['account_to']?.['title'] : 'not selected' }}
+                    {{ 'To Account'|translate }}<ion-text color="danger" *ngIf="!addExpenceForm.value?.['account_to']?.['title']">*</ion-text>: {{ addExpenceForm.value?.['account_to']?.['title'] ? addExpenceForm.value?.['account_to']?.['title'] : ('not selected'|translate) }}
                 </ion-button>
             </ng-template>
             <ion-card [class.invisible]="tab === 'transfer'">
                 <ion-card-header *ngIf="tab !== 'transfer'">
-                    <ion-card-subtitle>Category</ion-card-subtitle>
+                    <ion-card-subtitle>{{ 'Category'|translate }}</ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content *ngIf="tab !== 'transfer'">
                     <ion-grid>
@@ -77,7 +77,6 @@
                     </ion-grid>
                 </ion-card-content>
             </ion-card>
-            {{ addExpenceForm.invalid|log }}
             <app-keyboard
                 formControlName="value"
                 [disabled]="addExpenceForm.invalid"

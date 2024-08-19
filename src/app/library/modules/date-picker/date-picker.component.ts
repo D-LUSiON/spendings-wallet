@@ -9,6 +9,7 @@ import * as moment from 'moment';
 })
 export class DatePickerComponent implements OnInit {
 
+    // TODO: Translate months and days of the week
     @Input() monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     @Input() dayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     @Input() date: Date;

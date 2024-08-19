@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import {
     ActionSheetController,
@@ -12,25 +12,27 @@ import {
 
 } from '@ionic/angular';
 import { routes } from './app-routing.module';
-import { DatabaseService } from './services';
+import { DatabaseService, SettingsService } from './services';
 import { Capacitor } from '@capacitor/core';
+import { TranslateService } from '@ngx-translate/core';
+import { firstValueFrom, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
 
     root_routes: Routes = routes;
 
     appPages = [
-        { title: 'Home', url: '/home', icon: 'wallet' },
-        { title: 'Entries', url: '/entries', icon: 'list' },
-        { title: 'Statistics', url: '/statistics', icon: 'pie-chart' },
-        { title: 'Accounts', url: '/accounts', icon: 'cash' },
-        { title: 'Categories', url: '/categories', icon: 'apps' },
-        { title: 'Settings', url: '/settings', icon: 'settings' },
+        { title: this._translate.instant('Home'), defaultTitle: 'Home', url: '/home', icon: 'wallet' },
+        { title: this._translate.instant('Entries'), defaultTitle: 'Entries', url: '/entries', icon: 'list' },
+        { title: this._translate.instant('Statistics'), defaultTitle: 'Statistics', url: '/statistics', icon: 'pie-chart' },
+        { title: this._translate.instant('Accounts'), defaultTitle: 'Accounts', url: '/accounts', icon: 'cash' },
+        { title: this._translate.instant('Categories'), defaultTitle: 'Categories', url: '/categories', icon: 'apps' },
+        { title: this._translate.instant('Settings'), defaultTitle: 'Settings', url: '/settings', icon: 'settings' },
     ];
 
     current_url: string = '';
@@ -44,6 +46,8 @@ export class AppComponent {
 
     isWeb: boolean = false;
 
+    subs: Subscription = new Subscription();
+
     constructor(
         private _platform: Platform,
         private _router: Router,
@@ -54,16 +58,31 @@ export class AppComponent {
         private _menu: MenuController,
         private _toast: ToastController,
         private _db: DatabaseService,
+        private _translate: TranslateService,
+        private _settingsService: SettingsService,
     ) {
-        this._platform.ready().then(() => {
+        this._platform.ready().then(async () => {
             if (this._platform.is('cordova'))
                 this.backButtonEvent();
 
             this.isWeb = Capacitor.getPlatform() === 'web';
 
+            this.subs.add(
+                this._settingsService.UILang$.subscribe(async (ui_lang) => {
+                    await firstValueFrom(this._translate.use(ui_lang));
+                    this._setTranslations();
+                })
+            );
+
             setTimeout(async () => { // Timeout for the view to be updated **fkin' jeep-sqlite**
                 await this._db.initDBConnection();
             });
+        });
+    }
+
+    private _setTranslations() {
+        this.appPages.forEach(app_page => {
+            app_page.title = this._translate.instant(app_page.defaultTitle);
         });
     }
 
@@ -118,5 +137,9 @@ export class AppComponent {
 
     onExit() {
         navigator['app'].exitApp();
+    }
+
+    ngOnDestroy(): void {
+        this.subs.unsubscribe();
     }
 }

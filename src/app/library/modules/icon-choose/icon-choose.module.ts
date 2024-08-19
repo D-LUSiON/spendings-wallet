@@ -17,7 +17,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
         IonicModule,
         SharedModule,
         HttpClientModule,
-        ScrollingModule
+        ScrollingModule,
+        SharedModule,
     ],
     exports: [
         IconChooseComponent

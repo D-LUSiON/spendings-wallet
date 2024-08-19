@@ -6,12 +6,17 @@
                 <ion-list id="inbox-list">
                     <ion-list-header>
                         <h2>
-                            Personal money tracker
+                            {{ 'Spendings Wallet'|translate }}
                         </h2>
                     </ion-list-header>
                     <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-                        <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
-                            routerLinkActive="selected">
+                        <ion-item
+                            routerDirection="root"
+                            [routerLink]="[p.url]"
+                            lines="none"
+                            detail="false"
+                            routerLinkActive="selected"
+                        >
                             <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
                             <ion-label>{{ p.title }}</ion-label>
                         </ion-item>

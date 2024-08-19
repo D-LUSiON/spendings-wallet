@@ -3,7 +3,7 @@
         <ion-button slot="start" fill="clear" color="contrast" (click)="dismiss()">
             <ion-icon name="chevron-back-outline"></ion-icon>
         </ion-button>
-        <ion-title>{{ !account?.id ? 'Add account' : 'Edit account'}}</ion-title>
+        <ion-title>{{ !account?.id ? ('Add account'|translate) : ('Edit account'|translate)}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -11,22 +11,22 @@
     <form [formGroup]="accountForm" novalidate>
         <ion-item>
             <ion-label position="floating">
-                Account name <span class="text-danger">*</span>
+                {{ 'Account name'|translate }} <span class="text-danger">*</span>
             </ion-label>
             <ion-input class="ion-no-border" formControlName="title"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label position="floating">
-                Initial balance
+                {{ 'Initial balance'|translate }}
             </ion-label>
             <ion-input type="number" class="ion-no-border" formControlName="initial_balance"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label position="floating">
-                Description
+                {{ 'Description'|translate}}
                 <small>
                     <sup>
-                        <i>(optional)</i>
+                        <i>({{ 'optional'|translate }})</i>
                     </sup>
                 </small>
             </ion-label>
@@ -34,7 +34,7 @@
         </ion-item>
         <ion-item lines="full">
             <ion-checkbox slot="start" formControlName="active"></ion-checkbox>
-            <ion-label>Active</ion-label>
+            <ion-label>{{ 'Active'|translate }}</ion-label>
         </ion-item>
     </form>
 </ion-content>
@@ -42,7 +42,7 @@
 <ion-footer>
     <ion-toolbar class="bb-1 padding-x" color="warning">
         <ion-text>
-            <span class="text-danger">*</span> - required fields
+            <span class="text-danger">*</span> - {{ 'required fields'|translate }}
         </ion-text>
     </ion-toolbar>
     <ion-toolbar>
@@ -63,7 +63,7 @@
             (click)="dismiss(true)"
         >
             <ion-icon slot="start" name="save-outline"></ion-icon>
-            <ion-label>Save</ion-label>
+            <ion-label>{{ 'Save'|translate }}</ion-label>
         </ion-button>
     </ion-toolbar>
 </ion-footer>

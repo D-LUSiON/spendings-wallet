@@ -1,6 +1,6 @@
 <div class="keyboard-input-group">
     <ion-item class="keyboard-input">
-        <ion-label position="floating">Description</ion-label>
+        <ion-label position="floating">{{ 'Description'|translate }}</ion-label>
         <ion-input class="ion-no-border" [value]="description" (ionInput)="descriptionChanged($event)"></ion-input>
     </ion-item>
     <div class="keyboard-value">
@@ -71,7 +71,7 @@
                 (click)="clicked('calendar')"
             >
                 <!-- <ion-icon name="calendar-number-outline"></ion-icon> -->
-                <span class="small-text">{{ (date|date:'YYYY-MM-dd') === (today|date:'YYYY-MM-dd') ? 'Today' : date|date:'MMM/dd' }}</span>
+                <span class="small-text">{{ (date|date:'YYYY-MM-dd') === (today|date:'YYYY-MM-dd') ? ('Today'|translate) : date|date:'MMM/dd' }}</span>
                 <ion-ripple-effect></ion-ripple-effect>
             </ion-button>
         </ion-col>

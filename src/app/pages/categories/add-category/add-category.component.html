@@ -3,7 +3,7 @@
         <ion-button slot="start" fill="clear" color="light" (click)="dismiss()">
             <ion-icon name="chevron-back-outline"></ion-icon>
         </ion-button>
-        <ion-title>Add category</ion-title>
+        <ion-title>{{ 'Add category'|translate }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -12,18 +12,18 @@
 >
     <form [formGroup]="categoryForm" novalidate>
         <ion-item class="keyboard-input">
-            <ion-label position="floating">Cateogory name</ion-label>
+            <ion-label position="floating">{{ 'Cateogory name'|translate }}</ion-label>
             <ion-input class="ion-no-border" formControlName="title"></ion-input>
         </ion-item>
         <app-icon-choose
             formControlName="icon"
-            label="Category icon"
+            label="{{ 'Category icon'|translate }}"
             [icons]="icons"
             (iconsInit)="afterIconsInit()"
         ></app-icon-choose>
         <ion-item lines="full" class="bt-1">
             <ion-checkbox slot="start" formControlName="enabled"></ion-checkbox>
-            <ion-label>Enabled</ion-label>
+            <ion-label>{{ 'Enabled'|translate }}</ion-label>
         </ion-item>
     </form>
 </ion-content>
@@ -31,7 +31,7 @@
 <ion-footer>
     <ion-toolbar class="bb-1 padding-x" color="warning">
         <ion-text>
-            <span class="text-danger">*</span> - required fields
+            <span class="text-danger">*</span> - {{ 'required fields'|translate }}
         </ion-text>
     </ion-toolbar>
     <ion-toolbar>
@@ -52,7 +52,7 @@
             (click)="dismiss(true)"
         >
             <ion-icon slot="start" name="save-outline"></ion-icon>
-            <ion-label>Save</ion-label>
+            <ion-label>{{ 'Save'|translate }}</ion-label>
         </ion-button>
     </ion-toolbar>
 </ion-footer>

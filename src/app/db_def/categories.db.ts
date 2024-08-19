@@ -1,6 +1,7 @@
 import { Category } from '@app/shared/classes';
 
 export const DB_CATEGORIES_DEFAULT = [
+    new Category({ title: 'Shopping', icon: { prefix: 'la', name: 'shopping-cart' }, }),
     new Category({ title: 'Gasoline', icon: { prefix: 'la', name: 'gas-pump' } }),
     new Category({ title: 'Toys', icon: { prefix: 'la', name: 'robot' } }),
     new Category({ title: 'Clothing', icon: { prefix: 'la', name: 'tshirt' } }),
@@ -14,7 +15,6 @@ export const DB_CATEGORIES_DEFAULT = [
     new Category({ title: 'Household', icon: { prefix: 'la', name: 'couch' } }),
     new Category({ title: 'Traveling', icon: { prefix: 'la', name: 'globe' } }),
     new Category({ title: 'Pets', icon: { prefix: 'la', name: 'paw' } }),
-    new Category({ title: 'Shopping', icon: { prefix: 'la', name: 'shopping-cart' } }),
     new Category({ title: 'Salary', icon: { prefix: 'la', name: 'wallet' }, type: 'income' }),
     new Category({ title: 'Donation', icon: { prefix: 'la', name: 'donate', }, active: false, type: 'income' }),
     new Category({ title: 'Savings', icon: { prefix: 'la', name: 'piggy-bank' }, type: 'income' }),

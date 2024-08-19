@@ -8,7 +8,7 @@
         class="{{ value.prefix }} la-{{ value.name }} la-2x"
     ></span>
     <ion-label [color]="value ? 'dark': 'medium'">
-        <em *ngIf="!value">Select icon...</em>
+        <em *ngIf="!value">{{ 'Select icon...'|translate }}</em>
         <span *ngIf="value">{{ value.name|formatIconName }}</span>
     </ion-label>
     <ion-button

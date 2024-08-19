@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>Settings</ion-title>
+        <ion-title>{{ 'Settings'|translate }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -11,5 +11,19 @@
     [fullscreen]="true"
     [scrollEvents]="true"
 >
-
+    <ion-list>
+        <ion-item>
+        <ion-select
+            label="{{ 'UI Language'|translate }}"
+            placeholder="{{ 'Select language...'|translate }}"
+            [ngModel]="ui_lang"
+            (ionChange)="changeLanguage($event.detail.value)"
+        >
+            <ion-select-option
+                *ngFor="let lang of languages"
+                [value]="lang.value"
+            >{{ lang.label }}</ion-select-option>
+        </ion-select>
+        </ion-item>
+    </ion-list>
 </ion-content>

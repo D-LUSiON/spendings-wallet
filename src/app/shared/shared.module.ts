@@ -1,39 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
-import { CurrencyPipe } from './pipes/currency.pipe';
-import { FormatIconNamePipe } from './pipes/format-icon-name.pipe';
-import { ConsoleLogPipe } from './pipes/log.pipe';
-import { EntriesByDatePipe } from './pipes/entries-by-date.pipe';
-import { EntriesBallancePipe } from './pipes/entries-ballance.pipe';
-import { SortPipe } from './pipes/sort.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { PipesModule } from './pipes';
 
 @NgModule({
-    declarations: [
-        CurrencyPipe,
-        FormatIconNamePipe,
-        ConsoleLogPipe,
-        EntriesByDatePipe,
-        EntriesBallancePipe,
-        SortPipe,
-    ],
+    declarations: [],
     imports: [
         CommonModule,
         ReactiveFormsModule,
+        FormsModule,
         HttpClientModule,
+        TranslateModule,
     ],
     exports: [
         CommonModule,
         ReactiveFormsModule,
+        FormsModule,
         HttpClientModule,
-        CurrencyPipe,
-        FormatIconNamePipe,
-        ConsoleLogPipe,
-        EntriesByDatePipe,
-        EntriesBallancePipe,
-        SortPipe,
+        TranslateModule,
+        PipesModule,
     ]
 })
 export class SharedModule { }

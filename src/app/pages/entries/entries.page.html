@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>Entries</ion-title>
+        <ion-title>{{ 'Entries'|translate }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -25,7 +25,6 @@
         </ion-fab-button>
     </ion-fab>
     <ion-item-group *ngIf="entries.length; else no_entries">
-        {{ 'entries'|log:(entries|entriesByDate|keyvalue) }}
         <ng-container *ngFor="let date of (entries|entriesByDate|keyvalue); let idx = index">
             <ion-item-divider color="light" sticky>
                 {{ date.key }}
@@ -41,15 +40,15 @@
                     <i slot="start" class="app-icon app-icon-{{ entry.type }} la la-exchange-alt"></i>
                 </ng-template>
                 <ion-label>
-                    <ng-container *ngIf="entry.type === 'transfer'">Transfer</ng-container>
+                    <ng-container *ngIf="entry.type === 'transfer'">{{ 'Transfer'|translate }}</ng-container>
                     <ng-container *ngIf="entry.type !== 'transfer'">
                         {{ entry.description || entry.category.title }}
                     </ng-container>
                     <div>
                         <small>
                             <em>
-                                from {{ entry.account.title }}
-                                <ng-container *ngIf="entry.type === 'transfer'">to {{ entry.account_to.title }}</ng-container>
+                                {{ 'from'|translate }} {{ entry.account.title }}
+                                <ng-container *ngIf="entry.type === 'transfer'">{{ 'to'|translate }} {{ entry.account_to.title }}</ng-container>
                             </em>
                         </small>
                     </div>
@@ -60,7 +59,7 @@
     </ion-item-group>
     <ng-template #no_entries>
         <ion-text color="medium" class="no-entries">
-            No entries
+            {{ 'No entries'|translate }}
         </ion-text>
     </ng-template>
 </ion-content>

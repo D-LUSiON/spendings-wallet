@@ -4,6 +4,7 @@ import { KeyboardComponent } from './keyboard.component';
 import { IonicModule } from '@ionic/angular';
 import { DatePickerModule } from '../date-picker/date-picker.module';
 import { CalendarPopoverComponent } from './calendar-popover/calendar-popover.component';
+import { SharedModule } from '@app/shared';
 
 
 
@@ -16,6 +17,7 @@ import { CalendarPopoverComponent } from './calendar-popover/calendar-popover.co
         CommonModule,
         IonicModule,
         DatePickerModule,
+        SharedModule,
     ],
     exports: [
         KeyboardComponent,

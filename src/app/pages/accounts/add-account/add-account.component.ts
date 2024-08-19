@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
 import { AccountsService } from '@app/services';
 import { Account } from '@app/shared/classes';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-add-account',
@@ -21,6 +22,7 @@ export class AddAccountComponent implements OnInit, OnChanges {
         private _alertController: AlertController,
         private _accountsService: AccountsService,
         private _fb: FormBuilder,
+        private _translate: TranslateService,
     ) {
         this._initForm();
     }
@@ -54,12 +56,15 @@ export class AddAccountComponent implements OnInit, OnChanges {
 
     async remove() {
         const alert = await this._alertController.create({
-            header: 'Delete account?',
+            header: this._translate.instant('Delete account?'),
             message: 'Are you sure you want to delete this account?',
             buttons: [
-                'Cancel',
                 {
-                    text: 'Delete',
+                    text: this._translate.instant('Cancel'),
+                    role: 'cancel'
+                },
+                {
+                    text: this._translate.instant('Delete'),
                     role: 'delete'
                 }
             ]

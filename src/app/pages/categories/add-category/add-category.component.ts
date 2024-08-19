@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { CategoriesService, IconsService } from '@app/services';
 import { Category, IconSet } from '@app/shared/classes';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-add-category',
@@ -28,6 +29,7 @@ export class AddCategoryComponent implements OnInit, AfterViewInit, OnChanges, O
         private _iconsService: IconsService,
         private _categoriesService: CategoriesService,
         private _loadingController: LoadingController,
+        private _translate: TranslateService,
     ) {
         this._initForm();
 
@@ -73,10 +75,13 @@ export class AddCategoryComponent implements OnInit, AfterViewInit, OnChanges, O
 
     async remove() {
         const alert = await this._alertController.create({
-            header: 'Delete category?',
-            message: 'Are you sure you want to delete this category?',
+            header: this._translate.instant('Delete category?'),
+            message: this._translate.instant('Are you sure you want to delete this category?'),
             buttons: [
-                'Cancel',
+                {
+                    text: 'Cancel',
+                    role: 'cancel'
+                },
                 {
                     text: 'Delete',
                     role: 'delete'
