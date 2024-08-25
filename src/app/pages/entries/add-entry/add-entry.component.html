@@ -3,7 +3,10 @@
         <ion-button slot="start" fill="clear" color="dark" (click)="dismiss()">
             <ion-icon name="chevron-back-outline"></ion-icon>
         </ion-button>
-        <ion-title>{{ 'Add entry'|translate }}</ion-title>
+        <ion-title>
+            <ng-container *ngIf="!entry?.id; else edit_title">{{ 'Add entry'|translate }}</ng-container>
+            <ng-template #edit_title>{{ 'Edit entry'|translate }}</ng-template>
+        </ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -46,11 +49,11 @@
                     {{ 'To Account'|translate }}<ion-text color="danger" *ngIf="!addExpenceForm.value?.['account_to']?.['title']">*</ion-text>: {{ addExpenceForm.value?.['account_to']?.['title'] ? addExpenceForm.value?.['account_to']?.['title'] : ('not selected'|translate) }}
                 </ion-button>
             </ng-template>
-            <ion-card [class.invisible]="tab === 'transfer'">
-                <ion-card-header *ngIf="tab !== 'transfer'">
+            <ion-card *ngIf="tab !== 'transfer'">
+                <ion-card-header>
                     <ion-card-subtitle>{{ 'Category'|translate }}</ion-card-subtitle>
                 </ion-card-header>
-                <ion-card-content *ngIf="tab !== 'transfer'">
+                <ion-card-content>
                     <ion-grid>
                         <ion-row style="padding-bottom: 30px;">
                             <ion-col size="3" *ngFor="let category of filteredCategories()" class="ion-text-center">
@@ -74,9 +77,24 @@
                                 </ion-button> -->
                             </ion-col>
                         </ion-row>
+                        <ion-row>
+                            <ion-col></ion-col>
+                        </ion-row>
                     </ion-grid>
                 </ion-card-content>
             </ion-card>
+            <ion-item *ngIf="tab !== 'income'">
+                <ion-label position="floating">
+                    {{ 'Tax'|translate }}
+                    <small>
+                        <sup>
+                            <i>({{ 'optional'|translate }})</i>
+                        </sup>
+                    </small>
+                </ion-label>
+                <ion-input class="ion-no-border" type="number" formControlName="tax"></ion-input>
+            </ion-item>
+
             <app-keyboard
                 formControlName="value"
                 [disabled]="addExpenceForm.invalid"

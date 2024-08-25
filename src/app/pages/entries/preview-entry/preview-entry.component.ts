@@ -14,12 +14,9 @@ export class PreviewEntryComponent implements OnInit {
 
     constructor(
         private _modalCtrl: ModalController
-    ) {
-        console.log(`preview entry constructor`, this.entry);
-    }
+    ) { }
 
     ngOnInit() {
-        console.log(`preview entry ngOnInit`, this.entry);
     }
 
     dismiss() {

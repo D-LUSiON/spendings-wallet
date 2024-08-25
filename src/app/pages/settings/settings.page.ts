@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { SettingsService } from '@app/services';
+import { DatabaseService, SettingsService } from '@app/services';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -26,6 +26,7 @@ export class SettingsPage implements OnDestroy {
 
     constructor(
         private _settingsService: SettingsService,
+        private _databaseService: DatabaseService,
     ) {
         this.subs.add(
             this._settingsService.UILang$.subscribe((ui_lang) => {
@@ -36,6 +37,10 @@ export class SettingsPage implements OnDestroy {
 
     changeLanguage(lang: string) {
         this._settingsService.ui_lang = lang;
+    }
+
+    async exportDB() {
+        await this._databaseService.exportDb();
     }
 
     ngOnDestroy(): void {

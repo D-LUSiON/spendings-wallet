@@ -6,7 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class CurrencyPipe implements PipeTransform {
 
     transform(value: number, ...args: unknown[]): unknown {
-        const fixed = value.toFixed(2);
+        if (typeof value === 'string')
+            return value;
+        const fixed = (value || 0).toFixed(2);
         const fixed_arr = fixed.split('').reverse();
         const fixed_arr_formatted = fixed_arr.slice(0, 3);
         for (let idx = 3; idx < fixed_arr.length; idx++) {

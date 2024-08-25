@@ -6,6 +6,7 @@ import { FormatIconNamePipe } from './format-icon-name.pipe';
 import { ConsoleLogPipe } from './log.pipe';
 import { EntriesByDatePipe } from './entries-by-date.pipe';
 import { SortPipe } from './sort.pipe';
+import { ReverseArrayPipe } from './reverse-array.pipe';
 
 @NgModule({
     declarations: [
@@ -15,6 +16,7 @@ import { SortPipe } from './sort.pipe';
         EntriesByDatePipe,
         EntriesBallancePipe,
         SortPipe,
+        ReverseArrayPipe,
     ],
     imports: [
         CommonModule
@@ -26,6 +28,7 @@ import { SortPipe } from './sort.pipe';
         EntriesByDatePipe,
         EntriesBallancePipe,
         SortPipe,
+        ReverseArrayPipe,
     ]
 })
 export class PipesModule { }

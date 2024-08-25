@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Optional, Output, Self } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Optional, Output, Self } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { PopoverController } from '@ionic/angular';
+import { Platform, PopoverController } from '@ionic/angular';
 import { CalendarPopoverComponent } from './calendar-popover/calendar-popover.component';
+// import { Keyboard } from '@capacitor/keyboard';
+import { Subscription } from 'rxjs';
 
 const MATH_OPERATIONS_REGEX = /[\+\-\*\/]$/;
 
@@ -10,7 +12,7 @@ const MATH_OPERATIONS_REGEX = /[\+\-\*\/]$/;
     templateUrl: './keyboard.component.html',
     styleUrls: ['./keyboard.component.scss'],
 })
-export class KeyboardComponent implements OnInit, OnChanges, ControlValueAccessor {
+export class KeyboardComponent implements ControlValueAccessor, OnDestroy {
 
     @Input() value: number = 0;
     @Output() valueChange: EventEmitter<number> = new EventEmitter();
@@ -28,34 +30,44 @@ export class KeyboardComponent implements OnInit, OnChanges, ControlValueAccesso
 
     today: Date = new Date();
 
+    keyboard_opened: boolean = false;
+
     @Input() description: string = '';
     @Output() descriptionChange: EventEmitter<string> = new EventEmitter();
     @Output() done: EventEmitter<[number, Date]> = new EventEmitter();
 
+    subs: Subscription = new Subscription();
+
     constructor(
         @Optional() @Self() public _controlDirective: NgControl,
-        private _popoverController: PopoverController
+        private _popoverController: PopoverController,
+        private _platform: Platform,
     ) {
         if (_controlDirective)
             _controlDirective.valueAccessor = this;
+
+        this.subs.add(
+            this._platform.keyboardDidShow.subscribe(() => {
+                this.keyboard_opened = true;
+            })
+        );
+
+        this.subs.add(
+            this._platform.keyboardDidHide.subscribe(() => {
+                this.keyboard_opened = false;
+            })
+        );
     }
 
-    ngOnInit() {
-        console.log(`ngOnInit`, this);
-    }
+    ngOnChanges() { }
 
-    ngOnChanges(changes) {
-        console.log(`ngOnChanges`, changes);
-    }
-
-    onChange = (value: number | string | object) => {
-        console.log(`keyboard onChange`, value);
-    };
+    onChange = (value: number | string | object) => { };
 
     onTouched = () => { };
 
     writeValue(value: number): void {
-        console.log(`keyboard writeValue`, value);
+        this.value = value;
+        this.value_view = this.value.toFixed(2);
     }
 
     registerOnChange(fn: any): void {
@@ -72,7 +84,6 @@ export class KeyboardComponent implements OnInit, OnChanges, ControlValueAccesso
 
     descriptionChanged(event) {
         this.description = event.target.value;
-        console.log(`descriptionChanged`, this.description);
         this.descriptionChange.emit(this.description);
     }
 
@@ -134,7 +145,7 @@ export class KeyboardComponent implements OnInit, OnChanges, ControlValueAccesso
                     }
                     break;
                 case 'erase':
-                    // FIXTHIS:
+                    // FIXМЕ:
                     const input_string = this.input_string.substring(0, this.input_string.length - 2);
 
                     this.value = +input_string * 10 / 100;
@@ -174,5 +185,7 @@ export class KeyboardComponent implements OnInit, OnChanges, ControlValueAccesso
         this.dateChange.emit(this.date);
     }
 
-
+    ngOnDestroy(): void {
+        this.subs.unsubscribe();
+    }
 }

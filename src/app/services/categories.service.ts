@@ -74,7 +74,7 @@ export class CategoriesService {
         let catEntity = this._createEntity(category);
         catEntity = await this._categoriesRepository.save(catEntity);
         category = new Category(catEntity);
-        console.log(category);
+
         const category_idx = this._categories.findIndex(x => x.id === category.id);
         if (category_idx > -1)
             this._categories[category_idx] = category;
@@ -87,8 +87,7 @@ export class CategoriesService {
     }
 
     async removeCategory(category: Category) {
-        const catEntity = this._createEntity(category);
-        await this._categoriesRepository.delete(catEntity);
+        await this._categoriesRepository.delete({ id: category.id });
 
         this._categories = this._categories.filter(x => x.id !== category.id);
         this.categories$.next(this.categories);

@@ -1,13 +1,11 @@
 <ion-app>
-    <jeep-sqlite *ngIf="isWeb"></jeep-sqlite>
+    <jeep-sqlite *ngIf="isWeb" autoSave="true"></jeep-sqlite>
     <ion-split-pane contentId="main-content">
         <ion-menu contentId="main-content" type="overlay">
             <ion-content>
                 <ion-list id="inbox-list">
                     <ion-list-header>
-                        <h2>
-                            {{ 'Spendings Wallet'|translate }}
-                        </h2>
+                        <h2>Spendings Wallet</h2>
                     </ion-list-header>
                     <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
                         <ion-item

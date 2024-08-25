@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { EntryEntity } from './entry.entity';
 
 @Entity({
     name: 'accounts'
@@ -33,23 +34,29 @@ export class AccountEntity {
         type: 'text',
         transformer: {
             from: value => value,
-            to: value => parseFloat(value),
+            to: value => !isNaN(+value) ? parseFloat(value) : 0,
         }
     })
     initial_balance: number;
 
-    // @OneToMany(
-    //     () => FinancialMovementEntity,
-    //     movement => movement.account,
-    //     {
-    //         cascade: true,
-    //     }
-    // )
-    // financial_movements: FinancialMovementEntity[];
+    @OneToMany(
+        () => EntryEntity,
+        entry => entry.account,
+        {
+            cascade: false,
+            onDelete: 'NO ACTION',
+        }
+    )
+    entries: EntryEntity[];
 
-
-    // @OneToOne(() => CurrencyEntity)
-    // @JoinColumn()
-    // currency: CurrencyEntity
+    @OneToMany(
+        () => EntryEntity,
+        entry => entry.account_to,
+        {
+            cascade: false,
+            onDelete: 'NO ACTION',
+        }
+    )
+    entries_to: EntryEntity[];
 
 }

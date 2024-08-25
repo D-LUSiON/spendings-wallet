@@ -27,12 +27,12 @@ export class AppComponent implements OnDestroy {
     root_routes: Routes = routes;
 
     appPages = [
-        { title: this._translate.instant('Home'), defaultTitle: 'Home', url: '/home', icon: 'wallet' },
-        { title: this._translate.instant('Entries'), defaultTitle: 'Entries', url: '/entries', icon: 'list' },
-        { title: this._translate.instant('Statistics'), defaultTitle: 'Statistics', url: '/statistics', icon: 'pie-chart' },
-        { title: this._translate.instant('Accounts'), defaultTitle: 'Accounts', url: '/accounts', icon: 'cash' },
-        { title: this._translate.instant('Categories'), defaultTitle: 'Categories', url: '/categories', icon: 'apps' },
-        { title: this._translate.instant('Settings'), defaultTitle: 'Settings', url: '/settings', icon: 'settings' },
+        { title: 'Home', defaultTitle: 'Home', url: '/home', icon: 'wallet' },
+        { title: 'Income / Expences', defaultTitle: 'Income / Expences', url: '/entries', icon: 'list' },
+        { title: 'Statistics', defaultTitle: 'Statistics', url: '/statistics', icon: 'pie-chart' },
+        { title: 'Accounts', defaultTitle: 'Accounts', url: '/accounts', icon: 'cash' },
+        { title: 'Categories', defaultTitle: 'Categories', url: '/categories', icon: 'apps' },
+        { title: 'Settings', defaultTitle: 'Settings', url: '/settings', icon: 'settings' },
     ];
 
     current_url: string = '';
@@ -126,7 +126,7 @@ export class AppComponent implements OnDestroy {
                 this.onExit();
             } else {
                 const toast = await this._toast.create({
-                    message: 'Press "Back" again to exit the app...',
+                    message: this._translate.instant('Press "Back" again to exit the app...'),
                     duration: this.exit_delay,
                 });
                 toast.present();
@@ -139,7 +139,8 @@ export class AppComponent implements OnDestroy {
         navigator['app'].exitApp();
     }
 
-    ngOnDestroy(): void {
+    async ngOnDestroy() {
+        await this._db.disconnectDB();
         this.subs.unsubscribe();
     }
 }

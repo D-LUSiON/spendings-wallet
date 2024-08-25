@@ -12,7 +12,7 @@
         </div>
     </div>
 </div>
-<ion-grid>
+<ion-grid *ngIf="!keyboard_opened">
     <ion-row class="ion-nowrap">
         <ion-col class="ion-no-padding">
             <ion-button
@@ -70,7 +70,6 @@
                 color="dark"
                 (click)="clicked('calendar')"
             >
-                <!-- <ion-icon name="calendar-number-outline"></ion-icon> -->
                 <span class="small-text">{{ (date|date:'YYYY-MM-dd') === (today|date:'YYYY-MM-dd') ? ('Today'|translate) : date|date:'MMM/dd' }}</span>
                 <ion-ripple-effect></ion-ripple-effect>
             </ion-button>

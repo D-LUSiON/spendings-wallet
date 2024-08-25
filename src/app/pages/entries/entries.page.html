@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>{{ 'Entries'|translate }}</ion-title>
+        <ion-title>{{ 'Income'|translate }} / {{ 'Expences'|translate }} / {{ 'Transfers'|translate }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -18,43 +18,58 @@
         vertical="bottom"
         horizontal="end"
         slot="fixed"
-        (click)="openAddEntryModal()"
+        (click)="openEntryModal()"
     >
         <ion-fab-button>
             <ion-icon name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>
     <ion-item-group *ngIf="entries.length; else no_entries">
-        <ng-container *ngFor="let date of (entries|entriesByDate|keyvalue); let idx = index">
+        <ng-container *ngFor="let date of (entries|entriesByDate|keyvalue|reverseArray); let idx = index">
             <ion-item-divider color="light" sticky>
                 {{ date.key }}
                 <ion-text slot="end" [color]="(date.value|entriesBallance) >= 0 ? 'success' : 'danger'">{{ date.value|entriesBallance|currency }}</ion-text>
             </ion-item-divider>
-            <ion-item
-                lines="full"
+            <ion-item-sliding
                 *ngFor="let entry of date.value; let exp_idx = index" [class.item-last]="exp_idx === entries.length - 1"
-                (click)="previewEntry(entry)"
             >
-                <i *ngIf="entry.type !== 'transfer'; else transfer_icon" slot="start" class="app-icon app-icon-{{ entry.type }} {{ entry.category.icon.prefix }} la-{{ entry.category.icon.name }}"></i>
-                <ng-template #transfer_icon>
-                    <i slot="start" class="app-icon app-icon-{{ entry.type }} la la-exchange-alt"></i>
-                </ng-template>
-                <ion-label>
-                    <ng-container *ngIf="entry.type === 'transfer'">{{ 'Transfer'|translate }}</ng-container>
-                    <ng-container *ngIf="entry.type !== 'transfer'">
-                        {{ entry.description || entry.category.title }}
-                    </ng-container>
-                    <div>
-                        <small>
-                            <em>
-                                {{ 'from'|translate }} {{ entry.account.title }}
-                                <ng-container *ngIf="entry.type === 'transfer'">{{ 'to'|translate }} {{ entry.account_to.title }}</ng-container>
-                            </em>
-                        </small>
-                    </div>
-                </ion-label>
-                <ion-text slot="end" color="{{ entry.type === 'expence' ? 'danger' : (entry.type === 'income' ? 'success' : '') }}">{{ entry.type === 'expence' ? '-' : '' }}{{ entry.value|currency }}</ion-text>
-            </ion-item>
+                <ion-item-options side="start">
+                    <ion-item-option type="button" (click)="openEntryModal(entry)">
+                        <ion-icon slot="icon-only" name="pencil"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options>
+
+                <ion-item
+                    lines="full"
+                    (click)="previewEntry(entry)"
+                >
+                    <i *ngIf="entry.type !== 'transfer'; else transfer_icon" slot="start" class="app-icon app-icon-{{ entry.type }} {{ entry.category.icon.prefix }} la-{{ entry.category.icon.name }}"></i>
+                    <ng-template #transfer_icon>
+                        <i slot="start" class="app-icon app-icon-{{ entry.type }} la la-exchange-alt"></i>
+                    </ng-template>
+                    <ion-label>
+                        <ng-container *ngIf="entry.type === 'transfer'">{{ 'Transfer'|translate }}</ng-container>
+                        <ng-container *ngIf="entry.type !== 'transfer'">
+                            {{ entry.description || entry.category.title }}
+                        </ng-container>
+                        <div>
+                            <small>
+                                <em>
+                                    {{ 'from'|translate }} {{ entry.account.title }}
+                                    <ng-container *ngIf="entry.type === 'transfer'">{{ 'to'|translate }} {{ entry.account_to.title }}</ng-container>
+                                </em>
+                            </small>
+                        </div>
+                    </ion-label>
+                    <ion-text slot="end" color="{{ entry.type === 'expence' ? 'danger' : (entry.type === 'income' ? 'success' : '') }}">{{ entry.type === 'expence' ? '-' : '' }}{{ entry.value|currency }}</ion-text>
+                </ion-item>
+
+                <ion-item-options side="end">
+                    <ion-item-option color="danger" type="button" (click)="onDelete(entry)">
+                        <ion-icon slot="icon-only" name="trash"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
         </ng-container>
     </ion-item-group>
     <ng-template #no_entries>

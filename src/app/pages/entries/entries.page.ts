@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EntriesService } from '@app/services';
-import { Entry } from '@app/shared/classes';
-import { ModalController } from '@ionic/angular';
+import { Entry, TEntriesCollection } from '@app/shared/classes';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AddEntryComponent } from './add-entry/add-entry.component';
 import { PreviewEntryComponent } from './preview-entry/preview-entry.component';
+import { TranslateService } from '@ngx-translate/core';
+import { Tools } from '@app/shared';
 
 @Component({
     selector: 'app-entries',
@@ -21,34 +23,64 @@ export class EntriesPage implements OnInit, OnDestroy {
 
     constructor(
         private _modalCtrl: ModalController,
+        private _alertController: AlertController,
         private _entriesService: EntriesService,
+        private _translate: TranslateService,
     ) {
         this.subs.add(
             this._entriesService.entries$.subscribe((entries: Entry[]) => {
-                this.entries = entries.sort((entry, next) => entry.date.getTime() - next.date.getTime()).reverse();
+                this.entries = entries;
             })
         );
     }
 
-    ngOnInit() {
-    }
+    ngOnInit() { }
 
-    async openAddEntryModal() {
+    async openEntryModal(entry?: Entry) {
         const modal = await this._modalCtrl.create({
             component: AddEntryComponent,
-            componentProps: {}
+            componentProps: {
+                entry
+            }
         });
+
         return await modal.present();
     }
 
-    async previewEntry(entry) {
+    async previewEntry(entry: Entry) {
         const modal = await this._modalCtrl.create({
             component: PreviewEntryComponent,
             componentProps: {
                 entry
             }
         });
+
         return await modal.present();
+    }
+
+    async onDelete(entry: Entry) {
+        const alert = await this._alertController.create({
+            header: this._translate.instant('Delete entry?'),
+            message: 'Are you sure you want to delete this entry?',
+            buttons: [
+                {
+                    text: this._translate.instant('Cancel'),
+                    role: 'cancel'
+                },
+                {
+                    text: this._translate.instant('Delete'),
+                    role: 'delete'
+                }
+            ]
+        });
+
+        await alert.present();
+
+        const { role } = await alert.onDidDismiss();
+
+        if (role === 'delete')
+            await this._entriesService.removeEntry(entry);
+
     }
 
     ngOnDestroy() {

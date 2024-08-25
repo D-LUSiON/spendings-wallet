@@ -13,17 +13,20 @@
 >
     <ion-list>
         <ion-item>
-        <ion-select
-            label="{{ 'UI Language'|translate }}"
-            placeholder="{{ 'Select language...'|translate }}"
-            [ngModel]="ui_lang"
-            (ionChange)="changeLanguage($event.detail.value)"
-        >
-            <ion-select-option
-                *ngFor="let lang of languages"
-                [value]="lang.value"
-            >{{ lang.label }}</ion-select-option>
-        </ion-select>
+            <ion-select
+                label="{{ 'UI Language'|translate }}"
+                placeholder="{{ 'Select language...'|translate }}"
+                [ngModel]="ui_lang"
+                (ionChange)="changeLanguage($event.detail.value)"
+            >
+                <ion-select-option
+                    *ngFor="let lang of languages"
+                    [value]="lang.value"
+                >{{ lang.label }}</ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-button (click)="exportDB()">Export DB</ion-button>
         </ion-item>
     </ion-list>
 </ion-content>

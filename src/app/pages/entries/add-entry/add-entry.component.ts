@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountChooseComponent } from '@app/library/modules/account-choose/account-choose/account-choose.component';
 import { AccountsService, CategoriesService, EntriesService } from '@app/services';
@@ -12,6 +12,9 @@ import { Subscription } from 'rxjs';
     styleUrls: ['./add-entry.component.scss'],
 })
 export class AddEntryComponent implements OnInit, OnDestroy {
+
+    @Input()
+    entry: Entry;
 
     tab: 'expence' | 'income' | 'transfer' = 'expence';
 
@@ -43,7 +46,12 @@ export class AddEntryComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+        if (this.entry) {
+            this.addExpenceForm.patchValue(this.entry);
+            this.tab = this.entry.type;
+        }
+    }
 
     async clickSetAccount() {
         const popover = await this._popoverController.create({
@@ -73,13 +81,14 @@ export class AddEntryComponent implements OnInit, OnDestroy {
 
     private _initForm() {
         this.addExpenceForm = this._fb.group({
-            'type': this._fb.control(this.tab, [Validators.required]),
-            'account': this._fb.control(undefined, [Validators.required]),
-            'account_to': this._fb.control(undefined),
-            'category': this._fb.control(undefined, [Validators.required]),
-            'date': this._fb.control(new Date(), [Validators.required]),
-            'description': this._fb.control(''),
-            'value': this._fb.control(0, [Validators.required]),
+            type: this._fb.control(this.tab, [Validators.required]),
+            account: this._fb.control(undefined, [Validators.required]),
+            account_to: this._fb.control(undefined),
+            tax: this._fb.control(undefined),
+            category: this._fb.control(undefined, [Validators.required]),
+            date: this._fb.control(new Date(), [Validators.required]),
+            description: this._fb.control(''),
+            value: this._fb.control(0, [Validators.required]),
         });
     }
 
@@ -105,8 +114,6 @@ export class AddEntryComponent implements OnInit, OnDestroy {
                 this.addExpenceForm.get('account_to').updateValueAndValidity();
                 break;
         }
-
-        console.log(`segmentChanged`, this.addExpenceForm);
     }
 
     filteredCategories() {
@@ -135,19 +142,26 @@ export class AddEntryComponent implements OnInit, OnDestroy {
         this._modalCtrl.dismiss();
     }
 
-    onSubmit() {
-        console.log(`Form is valid:`, this.addExpenceForm.valid);
-        if (this.addExpenceForm.valid || 1 != 1) {
+    async onSubmit() {
+        if (this.addExpenceForm.valid) {
+            if (this.addExpenceForm.value['type'] === 'transfer')
+                this.addExpenceForm.patchValue({
+                    category: undefined
+                });
             if (this.addExpenceForm.value['type'] !== 'transfer')
                 this.addExpenceForm.patchValue({
                     account_to: undefined
                 });
 
             const entry = new Entry(this.addExpenceForm.value);
-            console.log(`onSubmit (${this.addExpenceForm.valid})`, this.addExpenceForm.value, entry);
 
-            this._entriesService.createOrUpdateEntry(entry);
+            await this._entriesService.createOrUpdateEntry(entry);
             this._modalCtrl.dismiss();
+        } else {
+            // TODO: Highlight invalid fields
+            for (let key in this.addExpenceForm.controls) {
+                console.log(`${key}:`, this.addExpenceForm.controls[key].valid);
+            }
         }
     }
 

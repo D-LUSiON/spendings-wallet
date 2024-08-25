@@ -40,13 +40,6 @@ export class AccountsPage implements OnInit, OnDestroy {
         });
 
         await modal.present();
-
-        // const { data } = await modal.onDidDismiss();
-        // console.log(`Data returned:`, data);
-
-        // if (data)
-        //     this._accountsService.createOrUpdateAccount(data);
-
     }
 
     async openAddAccountModal() {

@@ -42,7 +42,18 @@ export class AccountsService {
     }
 
     async getAll() {
-        const entities = await this._accountsRepository.find();
+        const entities = await this._accountsRepository.find({
+            relations: [
+                'entries',
+                'entries.account',
+                'entries.account_to',
+                'entries.category',
+                'entries_to',
+                'entries_to.account',
+                'entries_to.account_to',
+                'entries_to.category',
+            ]
+        });
         const accounts: Account[] = [];
         entities.forEach(entity => {
             const account = new Account(entity);
@@ -87,8 +98,7 @@ export class AccountsService {
     }
 
     async removeAccount(account: Account) {
-        const accEntity = this._createEntity(account);
-        await this._accountsRepository.delete(accEntity);
+        await this._accountsRepository.delete({ id: account.id });
 
         this._accounts = this._accounts.filter(x => x.id !== account.id);
         this.accounts$.next(this.accounts);

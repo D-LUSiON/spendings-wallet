@@ -29,7 +29,7 @@ export class Tools {
             mss: ((date.getMilliseconds() / 1000).toFixed(3)).split('.').pop(),
         };
 
-        let formatted = format.split('').join('');
+        let formatted: string = format.split('').join('');
         for (const key in date_elements) {
             if (date_elements.hasOwnProperty(key))
                 formatted = formatted.replace(new RegExp(key, 'g'), date_elements[key]);

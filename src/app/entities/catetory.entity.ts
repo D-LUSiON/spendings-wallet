@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Icon } from '@app/shared/classes';
+import { EntryEntity } from './entry.entity';
 
 @Entity({
     name: 'categories'
@@ -36,4 +37,13 @@ export class CategoryEntity {
         enum: ['income', 'expence']
     })
     type: 'income' | 'expence';
+
+    @OneToMany(
+        () => EntryEntity,
+        entry => entry.category,
+        {
+            cascade: true,
+        }
+    )
+    entries: EntryEntity[];
 }

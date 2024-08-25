@@ -30,15 +30,7 @@
         </ion-card-header>
         <ion-card-content>
             <ion-grid>
-                <ion-row>
-                    <!-- <ion-col class="ion-border-right">
-                        <div class="ion-text-center"><strong>Expences</strong></div>
-                        <div class="ion-text-center">{{ all_expences|currency }} лв.</div>
-                    </ion-col>
-                    <ion-col class="ion-border-right">
-                        <div class="ion-text-center"><strong>Income</strong></div>
-                        <div class="ion-text-center">{{ all_income|currency }} лв.</div>
-                    </ion-col> -->
+                <ion-row class="ion-border-bottom">
                     <ion-col>
                         <div class="ion-text-center"><strong>{{ 'Balance'|translate }}</strong></div>
                         <div
@@ -46,6 +38,16 @@
                             [class.ion-text-danger]="balance < 0"
                             [class.ion-text-success]="balance > 0"
                         >{{ balance|currency }} лв.</div>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col class="ion-border-right">
+                        <div class="ion-text-center"><strong translate>Total Income</strong></div>
+                        <div class="ion-text-center ion-text-success">{{ all_income|currency }} лв.</div>
+                    </ion-col>
+                    <ion-col>
+                        <div class="ion-text-center"><strong translate>Total Expences</strong></div>
+                        <div class="ion-text-center ion-text-danger">{{ all_expences|currency }} лв.</div>
                     </ion-col>
                 </ion-row>
             </ion-grid>
@@ -66,15 +68,19 @@
                 <ion-row>
                     <ion-col class="ion-border-right">
                         <div class="ion-text-center"><strong>{{ 'Income'|translate }}</strong></div>
-                        <div class="ion-text-center">{{ account.income|currency }} лв.</div>
-                    </ion-col>
-                    <ion-col class="ion-border-right">
-                        <div class="ion-text-center"><strong>{{ 'Expences'|translate }}</strong></div>
-                        <div class="ion-text-center">{{ account.expences|currency }} лв.</div>
+                        <div
+                            class="ion-text-center"
+                            [class.ion-text-success]="account.income > 0"
+                        >{{ account.income|currency }} лв.</div>
                     </ion-col>
                     <ion-col>
-                        <div class="ion-text-center"><strong>{{ 'Transfers'|translate }}</strong></div>
-                        <div class="ion-text-center">{{ account.transfers|currency }} лв.</div>
+                        <div class="ion-text-center"><strong>{{ 'Expences'|translate }}</strong></div>
+                        <div
+                            class="ion-text-center"
+                            [class.ion-text-danger]="account.expences > 0"
+                        >
+                            <ng-container *ngIf="account.expences > 0">-</ng-container>{{ account.expences|currency }} лв.
+                        </div>
                     </ion-col>
                 </ion-row>
             </ion-grid>
