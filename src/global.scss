@@ -25,6 +25,7 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+@import "./theme/spacing.scss";
 @import "./theme/colors.scss";
 // @import "./assets/fonts/Exo_2/exo2.font.css";
 
@@ -163,5 +164,12 @@ ion-menu {
     &.app-icon-disabled {
         background-color: var(--ion-color-medium);
         color: var(--ion-color-medium-contrast);
+    }
+}
+
+ion-content.cards-list {
+    ion-card:last-of-type,
+    ion-item-group:last-of-type {
+        margin-bottom: 74px;
     }
 }
